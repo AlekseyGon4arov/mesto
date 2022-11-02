@@ -1,4 +1,6 @@
 .card__like {
+  all: unset;
+  border: 0;
   background-image: url(../../../image/Like.svg);
   background-position: center;
   background-repeat: no-repeat;

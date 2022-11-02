@@ -6,9 +6,9 @@
   width: 32px;
   height: 32px;
   cursor: pointer;
-  position: relative;
+  position: absolute;
   top: -40px;
-  left: 402px;
+  left: 438px;
 }
 
 .popup__close:hover {
@@ -21,6 +21,6 @@
     width: 20px;
     height: 20px;
     top: -36px;
-    left: 240px;
+    left: 262px;
   }
 }
