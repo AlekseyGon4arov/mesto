@@ -10,11 +10,11 @@
   cursor: pointer;
   align-self: flex-end;
   margin: 0 0 9px 18px;
+  transition: 0.3s;
 }
 
 .profile__edit-button:hover {
   opacity: 0.6;
-  transition: 0.3s;
 }
 
 @media screen and (max-width: 625px) {

@@ -7,9 +7,9 @@
   width: 22px;
   height: 19px;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 .card__like:hover {
   opacity: 0.5;
-  transition: 0.3s;
 }

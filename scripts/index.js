@@ -4,9 +4,9 @@ let popupElement = document.querySelector('.popup');
 let popupCloseButton = popupElement.querySelector('.popup__close');
 let profileName = document.querySelector('.profile__title');
 let profileJob = document.querySelector('.profile__subtitle');
-let nameInput = document.querySelector('.popup__item_data_name');
-let jobInput = document.querySelector('.popup__item_data_job');
 let formElement = document.querySelector('.popup__form');
+let nameInput = formElement.querySelector('.popup__item_data_name');
+let jobInput = formElement.querySelector('.popup__item_data_job');
 
 // Функция открытия попап и переноса значений в форму
 function openPopup () {
