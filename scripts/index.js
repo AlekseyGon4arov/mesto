@@ -94,12 +94,12 @@ const createCard = (dataCard) => {
   return newCard;
 };
 
-// Добавление карточек
+// Отрисовка карточки
 const renderCard = (card, container) => {
   container.prepend(card);
 };
 
-// Рендер карточек
+// Перебор карточек
 initialCards.reverse().forEach((dataCard) => {
   renderCard(createCard(dataCard), cardsContainer);
 });
@@ -115,7 +115,7 @@ function handleFormCardSubmit (event) {
   closePopup(event.target.closest('.popup'));
 };
 
-// Функция открытия попап и переноса значений в форму
+// Функция открытия попап
 function openPopup(popup) {
   popup.classList.add('popup_opened');
 };
@@ -126,8 +126,8 @@ function closePopup(popup) {
 };
 
 // Функция для переноса значений при нажатиии на кнопку Сохранить
-function handleFormProfileSubmit (evt) {
-    evt.preventDefault();
+function handleFormProfileSubmit (event) {
+    event.preventDefault();
     profileName.textContent = nameProfileInput.value;
     profileJob.textContent = jobProfileInput.value;
     closePopup(popupEditElement);
