@@ -9,18 +9,22 @@ const popupViewerElement = document.querySelector('.popup_viewer');
 const popupImageViewerElement = document.querySelector('.popup__image_viewer');
 const popupTitleViewerElement = document.querySelector('.popup__image-title_viewer');
 
-const popupCloseButtons = document.querySelectorAll('.popup__close');
+const popupElements = document.querySelectorAll('.popup');
 
 const formProfileElement = document.querySelector('.popup__form_profile');
-const nameProfileInput = formProfileElement.querySelector('.popup__item_data_name');
-const jobProfileInput = formProfileElement.querySelector('.popup__item_data_job');
+const nameProfileInput = formProfileElement.querySelector('.popup__input_data_name');
+const jobProfileInput = formProfileElement.querySelector('.popup__input_data_job');
 
 const formCardElement = document.querySelector('.popup__form_card');
-const nameCardInput = formCardElement.querySelector('.popup__item_data_name');
-const imageCardInput = formCardElement.querySelector('.popup__item_data_image');
+const nameCardInput = formCardElement.querySelector('.popup__input_data_name');
+const imageCardInput = formCardElement.querySelector('.popup__input_data_image');
 
 const profileName = document.querySelector('.profile__title');
 const profileJob = document.querySelector('.profile__subtitle');
+
+// чтобы валидция срабатывала с учетом дефотного текста
+nameProfileInput.value = profileName.textContent;
+jobProfileInput.value = profileJob.textContent;
 
 const initialCards = [
   {
@@ -135,8 +139,6 @@ function handleFormProfileSubmit (event) {
 
 // События
 profileEditButton.addEventListener('click', () => {
-  nameProfileInput.value = profileName.textContent;
-  jobProfileInput.value = profileJob.textContent;
   openPopup(popupEditElement);
 });
 
@@ -144,15 +146,41 @@ profileAddButton.addEventListener('click', () => {
   openPopup(popupCardElement);
 });
 
+document.addEventListener('keydown', (event) => {
+  if (event.key === "Escape") {
+    popupElements.forEach((popup) => {
+      closePopup(popup);
+    });
+  }
+});
 
-popupCloseButtons.forEach((button) => {
-  const popup = button.closest('.popup');
+popupElements.forEach((popup) => {
+  const button = popup.querySelector('.popup__close');
+  const popupContainer = popup.querySelector('.popup__container')
   button.addEventListener('click', () => {
     closePopup(popup);
+  });
+  popup.addEventListener('click', () => {
+    closePopup(popup);
+  });
+  popupContainer.addEventListener('click', (event) => {
+    event.stopPropagation();
   });
 });
 
 formProfileElement.addEventListener('submit', handleFormProfileSubmit);
 
 formCardElement.addEventListener('submit', handleFormCardSubmit);
+
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClassVisible: 'popup__input-error_active'
+});
+
+
+
 
