@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./pages/index.css">
+  <script src="./scripts/validate.js" defer></script>
+  <script src="./scripts/index.js" defer></script>
   <title>Mesto</title>
   <meta name="description" content="Интерактивная страница">
   <meta name="author" content="Алексей Гончаров">
@@ -88,13 +90,12 @@
     </div>
   </div>
 
-<script src="./scripts/validate.js" defer></script>
-<script src="./scripts/index.js" defer></script>
-
 <template id="card-template">
   <article class="card">
-    <button class="card__delete-icon" type="button" aria-label="удаление карточки"></button>
-    <img class="card__image" src="#">
+    <div class="card__item">
+      <button class="card__delete-icon" type="button" aria-label="удаление карточки"></button>
+      <img class="card__image" src="#">
+    </div>
     <div class="card__group">
       <h2 class="card__title"></h2>
       <button class="card__like" type="button" aria-label="лайк"></button>
