@@ -1,3 +1,7 @@
+import Card from './Card.js';
+
+import FormValidator from './FormValidator.js';
+
 // DOM узлы
 const cardsContainer = document.querySelector('.cards');
 
@@ -56,49 +60,11 @@ const initialCards = [
   }
 ];
 
-// Шаблон template
-const cardTemplate = document.querySelector('#card-template').content.querySelector('.card');
-
-function handleLike (event) {
-  event.preventDefault();
-  event.target.classList.toggle('card__like_active');
-};
-
-function handleDelete (event) {
-  event.preventDefault();
-  const card = event.target.closest('.card');
-  card.remove();
-};
-
-function handleImage (event) {
-  event.preventDefault();
-  const image = event.target.src;
-  const title = event.target.alt;
+function handleImage ({name, link}) {
   openPopup(popupViewerElement);
-  popupImageViewerElement.src = image;
-  popupImageViewerElement.alt = title;
-  popupTitleViewerElement.textContent = title;
-};
-
-// Создание карточек
-const createCard = (dataCard) => {
-  const newCard = cardTemplate.cloneNode(true);
-
-  const name = newCard.querySelector('.card__title');
-  name.textContent = dataCard.name;
-
-  const cardImage = newCard.querySelector('.card__image');
-  cardImage.src = dataCard.link;
-  cardImage.alt = dataCard.name;
-  cardImage.addEventListener('click', handleImage);
-
-  const like = newCard.querySelector('.card__like');
-  like.addEventListener('click', handleLike);
-
-  const deleteButton = newCard.querySelector('.card__delete-icon');
-  deleteButton.addEventListener('click', handleDelete);
-
-  return newCard;
+  popupImageViewerElement.src = link;
+  popupImageViewerElement.alt = name;
+  popupTitleViewerElement.textContent = name;
 };
 
 // Отрисовка карточки
@@ -107,8 +73,13 @@ const renderCard = (card, container) => {
 };
 
 // Перебор карточек
-initialCards.reverse().forEach((dataCard) => {
-  renderCard(createCard(dataCard), cardsContainer);
+initialCards.reverse().forEach(({name, link}) => {
+  renderCard(new Card({
+    name,
+    link,
+    templateSelector: "#card-template",
+    handleImage
+  }).getView(), cardsContainer);
 });
 
 function handleFormCardSubmit (event) {
@@ -117,8 +88,12 @@ function handleFormCardSubmit (event) {
     name: nameCardInput.value,
     link: imageCardInput.value
   };
-  event.target.reset();
-  renderCard(createCard(dataCard), cardsContainer);
+    event.target.reset();
+    renderCard(new Card({
+      ...dataCard,
+      templateSelector: "#card-template",
+      handleImage
+    }).getView(), cardsContainer);
   closePopup(popupCardElement);
   disableButton(formCardButton, inactiveButtonClass);
 };
@@ -174,15 +149,16 @@ formProfileElement.addEventListener('submit', handleFormProfileSubmit);
 
 formCardElement.addEventListener('submit', handleFormCardSubmit);
 
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inputErrorClass: 'popup__input_type_error',
-  errorClassVisible: 'popup__input-error_active',
-  inactiveButtonClass,
+const formList = Array.from(document.querySelectorAll('.popup__form'));
+formList.forEach((formElement) => {
+  new FormValidator({
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    inputErrorClass: 'popup__input_type_error',
+    errorClassVisible: 'popup__input-error_active',
+    inactiveButtonClass,
+  }, formElement).enableValidation();
 });
-
 
 
 
