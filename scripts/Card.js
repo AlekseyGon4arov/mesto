@@ -13,34 +13,29 @@ class Card {
   _setData() {
       const name = this.newCard.querySelector('.card__title');
       name.textContent = this._name;
-      const cardImage = this.newCard.querySelector('.card__image');
-      cardImage.src = this._link;
-      cardImage.alt = this._name;
+      this._cardImage = this.newCard.querySelector('.card__image');
+      this._cardImage.src = this._link;
+      this._cardImage.alt = this._name;
   }
 
   _setEventListeners() {
-    const cardImage = this.newCard.querySelector('.card__image');
-    cardImage.addEventListener('click', (event) => {
-      event.preventDefault();
+    this._cardImage.addEventListener('click', (event) => {
       this._handleImage({ name: this._name, link: this._link});
     });
 
-    const like = this.newCard.querySelector('.card__like');
-    like.addEventListener('click', this._handleLike);
+    this._likeElement = this.newCard.querySelector('.card__like');
+    this._likeElement.addEventListener('click', () => this._handleLike());
 
-    const deleteButton = this.newCard.querySelector('.card__delete-icon');
-    deleteButton.addEventListener('click', (event) => this._handleDelete(event));
+    this._deleteElement = this.newCard.querySelector('.card__delete-icon');
+    this._deleteElement.addEventListener('click', () => this._handleDelete());
   }
 
-  _handleDelete(event) {
-    event.preventDefault();
-    console.log(this.newCard);
+  _handleLike() {
+    this._likeElement.classList.toggle('card__like_active');
+  }
+
+  _handleDelete() {
     this.newCard.remove();
-  }
-
-  _handleLike(event) {
-    event.preventDefault();
-    event.target.classList.toggle('card__like_active');
   }
 
   getView() {

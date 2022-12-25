@@ -15,10 +15,12 @@ const popupTitleViewerElement = document.querySelector('.popup__image-title_view
 
 const popupElements = document.querySelectorAll('.popup');
 
+let formProfileValidator;
 const formProfileElement = document.querySelector('.popup__form_profile');
 const nameProfileInput = formProfileElement.querySelector('.popup__input_data_name');
 const jobProfileInput = formProfileElement.querySelector('.popup__input_data_job');
 
+let formCardValidator;
 const formCardElement = document.querySelector('.popup__form_card');
 const formCardButton = formCardElement.querySelector('.popup__button');
 const nameCardInput = formCardElement.querySelector('.popup__input_data_name');
@@ -28,10 +30,6 @@ const profileName = document.querySelector('.profile__title');
 const profileJob = document.querySelector('.profile__subtitle');
 
 const inactiveButtonClass = 'popup__button_disabled';
-
-// чтобы валидция срабатывала с учетом дефотного текста
-nameProfileInput.value = profileName.textContent;
-jobProfileInput.value = profileJob.textContent;
 
 const initialCards = [
   {
@@ -95,7 +93,8 @@ function handleFormCardSubmit (event) {
       handleImage
     }).getView(), cardsContainer);
   closePopup(popupCardElement);
-  disableButton(formCardButton, inactiveButtonClass);
+
+  formCardValidator.disableButton();
 };
 
 const handleEsc = (event) => {
@@ -128,6 +127,8 @@ function handleFormProfileSubmit (event) {
 // События
 profileEditButton.addEventListener('click', () => {
   openPopup(popupEditElement);
+  nameProfileInput.value = profileName.textContent;
+  jobProfileInput.value = profileJob.textContent;
 });
 
 profileAddButton.addEventListener('click', () => {
@@ -149,16 +150,16 @@ formProfileElement.addEventListener('submit', handleFormProfileSubmit);
 
 formCardElement.addEventListener('submit', handleFormCardSubmit);
 
-const formList = Array.from(document.querySelectorAll('.popup__form'));
-formList.forEach((formElement) => {
-  new FormValidator({
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__button',
-    inputErrorClass: 'popup__input_type_error',
-    errorClassVisible: 'popup__input-error_active',
-    inactiveButtonClass,
-  }, formElement).enableValidation();
-});
+const validatorConfig = {
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inputErrorClass: 'popup__input_type_error',
+  errorClassVisible: 'popup__input-error_active',
+  inactiveButtonClass,
+};
 
+formCardValidator = new FormValidator(validatorConfig, formCardElement);
+formCardValidator.enableValidation();
 
-
+formProfileValidator = new FormValidator(validatorConfig, formProfileElement);
+formProfileValidator.enableValidation();
