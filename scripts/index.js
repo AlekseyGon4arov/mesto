@@ -2,6 +2,8 @@ import Card from './Card.js';
 
 import FormValidator from './FormValidator.js';
 
+import { initialCards } from './Constants.js';
+
 // DOM узлы
 const cardsContainer = document.querySelector('.cards');
 
@@ -15,12 +17,10 @@ const popupTitleViewerElement = document.querySelector('.popup__image-title_view
 
 const popupElements = document.querySelectorAll('.popup');
 
-let formProfileValidator;
 const formProfileElement = document.querySelector('.popup__form_profile');
 const nameProfileInput = formProfileElement.querySelector('.popup__input_data_name');
 const jobProfileInput = formProfileElement.querySelector('.popup__input_data_job');
 
-let formCardValidator;
 const formCardElement = document.querySelector('.popup__form_card');
 const formCardButton = formCardElement.querySelector('.popup__button');
 const nameCardInput = formCardElement.querySelector('.popup__input_data_name');
@@ -31,32 +31,20 @@ const profileJob = document.querySelector('.profile__subtitle');
 
 const inactiveButtonClass = 'popup__button_disabled';
 
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg',
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
+const validatorConfig = {
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inputErrorClass: 'popup__input_type_error',
+  errorClassVisible: 'popup__input-error_active',
+  inactiveButtonClass,
+};
+
+const formProfileValidator = new FormValidator(validatorConfig, formProfileElement);
+formProfileValidator.enableValidation();
+
+const formCardValidator = new FormValidator(validatorConfig, formCardElement);
+formCardValidator.enableValidation();
+
 
 function handleImage ({name, link}) {
   openPopup(popupViewerElement);
@@ -70,28 +58,28 @@ const renderCard = (card, container) => {
   container.prepend(card);
 };
 
-// Перебор карточек
-initialCards.reverse().forEach(({name, link}) => {
-  renderCard(new Card({
+function createCard({name, link}) {
+  return new Card({
     name,
     link,
     templateSelector: "#card-template",
     handleImage
-  }).getView(), cardsContainer);
+  }).getView();
+};
+
+// Перебор карточек
+initialCards.reverse().forEach((cardData) => {
+  renderCard(createCard(cardData), cardsContainer);
 });
 
 function handleFormCardSubmit (event) {
   event.preventDefault();
-  const dataCard = {
+  const cardData = {
     name: nameCardInput.value,
     link: imageCardInput.value
   };
     event.target.reset();
-    renderCard(new Card({
-      ...dataCard,
-      templateSelector: "#card-template",
-      handleImage
-    }).getView(), cardsContainer);
+    renderCard(createCard(cardData), cardsContainer);
   closePopup(popupCardElement);
 
   formCardValidator.disableButton();
@@ -150,16 +138,5 @@ formProfileElement.addEventListener('submit', handleFormProfileSubmit);
 
 formCardElement.addEventListener('submit', handleFormCardSubmit);
 
-const validatorConfig = {
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inputErrorClass: 'popup__input_type_error',
-  errorClassVisible: 'popup__input-error_active',
-  inactiveButtonClass,
-};
 
-formCardValidator = new FormValidator(validatorConfig, formCardElement);
-formCardValidator.enableValidation();
 
-formProfileValidator = new FormValidator(validatorConfig, formProfileElement);
-formProfileValidator.enableValidation();
