@@ -12,10 +12,10 @@ import {
   formCardElement,
   validatorConfig
 } from '../utils/constants.js';
-
 import {
   createCard
 } from '../utils/utils.js';
+import './index.css';
 
 const userInfo = new UserInfo({name: '.profile__title', info: '.profile__subtitle'})
 
