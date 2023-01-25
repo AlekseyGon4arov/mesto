@@ -22,7 +22,9 @@ const userInfo = new UserInfo({name: '.profile__title', info: '.profile__subtitl
 const popupEdit = new PopupWithForm('.popup_edit', (data) => {
     userInfo.setUserInfo({nameInfo: data.editname, jobInfo: data.editjob});
     popupEdit.close();
-}).setEventListeners();
+});
+
+popupEdit.setEventListeners();
 
 const popupCard = new PopupWithForm('.popup_card', (data) => {
   const cardData = {
@@ -31,9 +33,9 @@ const popupCard = new PopupWithForm('.popup_card', (data) => {
   };
     section.addItem(createCard(cardData));
     popupCard.close();
+});
 
-  formCardValidator.disableButton();
-}).setEventListeners();
+popupCard.setEventListeners();
 
 const formProfileValidator = new FormValidator(validatorConfig, formProfileElement);
 formProfileValidator.enableValidation();
@@ -46,15 +48,18 @@ const section = new Section({
     renderer: (data) => {
       return createCard(data);
     }
-  }, '.cards').renderItems();
+  }, '.cards');
+
+section.renderItems();
 
 profileEditButton.addEventListener('click', () => {
   popupEdit.open();
-  const profileInfo =  userInfo.getUserInfo();
+  const profileInfo = userInfo.getUserInfo();
   nameProfileInput.value = profileInfo.nameInfo;
   jobProfileInput.value = profileInfo.jobInfo;
 });
 
 profileAddButton.addEventListener('click', () => {
   popupCard.open();
+  formCardValidator.disableButton();
 });

@@ -13,6 +13,5 @@ export default class Section {
     this._initialItems.forEach((item) => {
       this.addItem(this._createData(item));
     })
-    return this;
   }
 }

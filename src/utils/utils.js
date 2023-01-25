@@ -1,7 +1,9 @@
 import Card from '../components/Card.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 
-const popupViewer = new PopupWithImage('.popup_viewer').setEventListeners();
+const popupViewer = new PopupWithImage('.popup_viewer');
+
+popupViewer.setEventListeners();
 
 export function handleCardClick ({name, link}) {
   popupViewer.open({link, name});
