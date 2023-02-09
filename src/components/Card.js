@@ -1,7 +1,5 @@
-import {userInfo} from '../pages';
-
 class Card {
-  constructor({ name, link, templateSelector, handleCardClick, likes, owner, handleDeleteClick, _id, handeLikeClick}){
+  constructor({ name, link, templateSelector, handleCardClick, likes, owner, handleDeleteClick, _id, handeLikeClick, userInfo}){
     this._name = name;
     this._link = link;
     this._likes = likes;
@@ -11,11 +9,12 @@ class Card {
     this._handeLikeClick = handeLikeClick;
     this._ownerId = owner._id;
     this._id = _id;
+    this._userInfo = userInfo;
   }
 
   _getTemplate() {
     const template = document.querySelector(this._templateSelector).content.querySelector('.card').cloneNode(true);
-    if(this._ownerId !== userInfo._id){
+    if(this._ownerId !== this._userInfo._id){
       template.querySelector('.card__delete-icon').remove();
     }
 
@@ -27,7 +26,7 @@ class Card {
       name.textContent = this._name;
       this._cardImage = this.newCard.querySelector('.card__image');
       this._cardLikeCount = this.newCard.querySelector('.card__like_count');
-      this.isLikedMe = this._likes.map(like => like._id).includes(userInfo._id);
+      this.isLikedMe = this._likes.map(like => like._id).includes(this._userInfo._id);
       if(this.isLikedMe){
         this._likeElement.classList.add('card__like_button_active');
       }
@@ -39,7 +38,7 @@ class Card {
       this._cardImage.alt = this._name;
   }
 
-  _updateData({likes}) {
+  updateData({likes}) {
     this._likes = likes;
     this._setData();
   }
@@ -65,7 +64,7 @@ class Card {
     this._handleDeleteClick(this);
   }
 
-  _remove() {
+  remove() {
     this.newCard.remove();
   }
 
